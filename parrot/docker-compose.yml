@@ -1,0 +1,47 @@
+version: '3.6'
+services: 
+
+#------------------------------
+# Point sale Web API service
+#------------------------------
+  point-sale-web-api:
+    image: 'point-sale-web-api:1.0.0'
+    deploy:
+      resources:
+          limits:
+            cpus: '1'
+            memory: 1024M
+    restart: on-failure
+    depends_on: 
+      - postgres-db
+    ports:
+      - 8081:8081
+    networks:
+       parrot-point-sale-net:
+        aliases: 
+          - point-sale-web-api
+
+#------------------------------
+#Postgress data base
+#------------------------------
+  postgres-container:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+    networks: 
+      parrot-point-sale-net:
+        aliases: 
+          - postgres-container
+
+
+#------------------------------
+# General resources
+#------------------------------
+networks:
+  parrot-point-sale-net:
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
