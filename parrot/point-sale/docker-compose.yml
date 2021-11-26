@@ -1,0 +1,6 @@
+version: '3.6'
+services: 
+  point-sale-web-api:
+    image: 'point-sale-web-api:1.0.0'
+    build:
+      context: ./
